@@ -2,7 +2,7 @@
 CRM de Vendas
 
 ## Requisitos
-- JDK 17
+- JDK 21 (ou mais novo)
 - PostgreSQL com o banco `crm_vendas` criado (schema via script SQL)
 - Não precisa instalar o Maven: use o wrapper `mvnw`
 
