@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: crm-vendas-receptivo
+
+  # Configurações locais de cada desenvolvedor (senha do banco, segredo do JWT).
+  # Esse arquivo NÃO vai para o Git. Use application-local.example.yml como modelo.
+  config:
+    import: optional:classpath:application-local.yml
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/crm_vendas}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    # O schema é criado pelo script SQL; o Hibernate só confere se as entidades batem com o banco.
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    com.ibrowse.crm: DEBUG

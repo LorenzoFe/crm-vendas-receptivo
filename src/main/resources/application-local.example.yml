@@ -1,0 +1,11 @@
+# Modelo de configuração local.
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/crm_vendas
+    username: postgres
+    password: sua-senha-aqui
+
+jwt:
+  # Qualquer texto com no mínimo 32 caracteres
+  secret: coloque-aqui-um-segredo-com-pelo-menos-32-caracteres
