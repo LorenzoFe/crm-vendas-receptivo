@@ -12,4 +12,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	@EntityGraph(attributePaths = { "roles", "roles.permissoes" })
 	Optional<Usuario> findByEmailIgnoreCase(String email);
 
+	boolean existsByEmailIgnoreCase(String email);
+
+	boolean existsByEmailIgnoreCaseAndIdNot(String email, Long id);
+
 }
