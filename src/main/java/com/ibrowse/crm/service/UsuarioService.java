@@ -82,6 +82,18 @@ public class UsuarioService {
         usuario.setAtivo(false);
     }
 
+    public Usuario buscarResponsavel(Long id){
+        if (id == null){
+            return null;
+        }
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário responsável " + id + " não encontrado"));
+        if (!Boolean.TRUE.equals(usuario.getAtivo())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário responsável " + id + " está inativo");
+        }
+        return usuario;
+    }
+
     private Usuario buscaEntidade(Long id){
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário " + id + " não encontrado"));
