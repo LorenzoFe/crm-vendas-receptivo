@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ibrowse.crm.dto.request.MudarEstagioRequest;
 import com.ibrowse.crm.dto.request.OportunidadeRequest;
 import com.ibrowse.crm.dto.request.PerderOportunidadeRequest;
+import com.ibrowse.crm.dto.response.KanbanEstagioResponse;
 import com.ibrowse.crm.dto.response.OportunidadeResponse;
 import com.ibrowse.crm.enums.StatusOportunidade;
 import com.ibrowse.crm.service.OportunidadeConsultaService;
@@ -86,6 +87,11 @@ public class OportunidadeController {
     public OportunidadeResponse perder(@PathVariable @Positive Long id,
             @RequestBody @Valid PerderOportunidadeRequest request) {
         return service.perder(id, request);
+    }
+
+    @GetMapping("/kanban")
+    public List<KanbanEstagioResponse> kanban(@RequestParam(required = false) @Positive Long vendedorId) {
+        return consultas.kanban(vendedorId);
     }
 
 }

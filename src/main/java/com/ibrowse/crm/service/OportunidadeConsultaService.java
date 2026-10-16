@@ -17,9 +17,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ibrowse.crm.dto.response.*;
 import com.ibrowse.crm.config.PaginacaoConfig;
+import com.ibrowse.crm.entity.EstagioVenda;
 import com.ibrowse.crm.entity.Oportunidade;
 import com.ibrowse.crm.enums.StatusOportunidade;
 import com.ibrowse.crm.mapper.OportunidadeMapper;
+import com.ibrowse.crm.repository.EstagioVendaRepository;
 import com.ibrowse.crm.repository.OportunidadeRepository;
 
 import jakarta.persistence.EntityManager;
@@ -34,6 +36,7 @@ public class OportunidadeConsultaService {
             "dataCriacao", "dataAtualizacao", "dataFechamentoEsperada", "status");
 
     private final OportunidadeRepository repository;
+    private final EstagioVendaRepository estagios;
     private final OportunidadeMapper mapper;
 
     public Page<OportunidadeResponse> listar(StatusOportunidade status, Long vendedorId, Long estagioId,
@@ -44,6 +47,17 @@ public class OportunidadeConsultaService {
 
     public OportunidadeResponse buscar(Long id) {
         return mapper.toResponse(encontrar(id));
+    }
+
+    public List<KanbanEstagioResponse> kanban(Long vendedorId) {
+        Map<Long, List<OportunidadeResponse>> porEstagio = repository
+                .buscarParaKanban(StatusOportunidade.ATIVA, vendedorId).stream()
+                .map(mapper::toResponse).collect(Collectors.groupingBy(OportunidadeResponse::estagioId));
+        return estagios.findAllByOrderByOrdemAscIdAsc().stream()
+                .map(estagio -> new KanbanEstagioResponse(estagio.getId(), estagio.getNome(),
+                        estagio.getOrdem(), estagio.getProbabilidadeConversao(),
+                        porEstagio.getOrDefault(estagio.getId(), List.of())))
+                .toList();
     }
 
     private Oportunidade encontrar(Long id) {

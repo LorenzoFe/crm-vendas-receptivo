@@ -26,6 +26,15 @@ public interface OportunidadeRepository extends JpaRepository<Oportunidade, Long
             @Param("vendedorId") Long vendedorId, @Param("estagioId") Long estagioId,
             @Param("empresaId") Long empresaId, Pageable pageable);
 
+    @EntityGraph(attributePaths = {"empresa", "contato", "vendedor", "estagio"})
+    @Query("""
+            select o from Oportunidade o
+            where o.status = :status and (:vendedorId is null or o.vendedor.id = :vendedorId)
+            order by o.id
+            """)
+    List<Oportunidade> buscarParaKanban(@Param("status") StatusOportunidade status,
+            @Param("vendedorId") Long vendedorId);
+
     @Query("""
             select (count(o) > 0) from Oportunidade o where o.id = :id and (
                 exists (select i.id from ItemOportunidade i where i.oportunidade.id = o.id)
