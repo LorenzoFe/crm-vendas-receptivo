@@ -36,6 +36,13 @@ public interface OportunidadeRepository extends JpaRepository<Oportunidade, Long
             @Param("vendedorId") Long vendedorId);
 
     @Query("""
+            select o.estagio.id as estagioId, count(o) as quantidade,
+                   coalesce(sum(o.valorEstimado), 0) as valorEstimado
+            from Oportunidade o where o.status = :status group by o.estagio.id
+            """)
+    List<PipelineResumo> resumirPipeline(@Param("status") StatusOportunidade status);
+
+    @Query("""
             select (count(o) > 0) from Oportunidade o where o.id = :id and (
                 exists (select i.id from ItemOportunidade i where i.oportunidade.id = o.id)
                 or exists (select p.id from Proposta p where p.oportunidade.id = o.id)

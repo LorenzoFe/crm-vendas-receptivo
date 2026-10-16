@@ -23,6 +23,7 @@ import com.ibrowse.crm.enums.StatusOportunidade;
 import com.ibrowse.crm.mapper.OportunidadeMapper;
 import com.ibrowse.crm.repository.EstagioVendaRepository;
 import com.ibrowse.crm.repository.OportunidadeRepository;
+import com.ibrowse.crm.repository.PipelineResumo;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,27 @@ public class OportunidadeConsultaService {
                         estagio.getOrdem(), estagio.getProbabilidadeConversao(),
                         porEstagio.getOrDefault(estagio.getId(), List.of())))
                 .toList();
+    }
+
+    public PipelineResponse pipeline() {
+        Map<Long, PipelineResumo> resumo = repository.resumirPipeline(StatusOportunidade.ATIVA).stream()
+                .collect(Collectors.toMap(PipelineResumo::getEstagioId, Function.identity()));
+        List<PipelineEstagioResponse> linhas = estagios.findAllByOrderByOrdemAscIdAsc().stream()
+                .map(estagio -> linhaPipeline(estagio, resumo.get(estagio.getId()))).toList();
+        return new PipelineResponse(linhas,
+                linhas.stream().mapToLong(PipelineEstagioResponse::quantidade).sum(),
+                linhas.stream().map(PipelineEstagioResponse::valorEstimado).reduce(BigDecimal.ZERO, BigDecimal::add),
+                linhas.stream().map(PipelineEstagioResponse::valorPonderado).reduce(BigDecimal.ZERO, BigDecimal::add));
+    }
+
+    private PipelineEstagioResponse linhaPipeline(EstagioVenda estagio, PipelineResumo resumo) {
+        BigDecimal valor = resumo == null || resumo.getValorEstimado() == null
+                ? BigDecimal.ZERO : resumo.getValorEstimado();
+        int probabilidade = estagio.getProbabilidadeConversao() == null ? 0 : estagio.getProbabilidadeConversao();
+        BigDecimal ponderado = valor.multiply(BigDecimal.valueOf(probabilidade))
+                .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+        return new PipelineEstagioResponse(estagio.getId(), estagio.getNome(),
+                resumo == null ? 0 : resumo.getQuantidade(), valor.setScale(2, RoundingMode.HALF_UP), ponderado);
     }
 
     private Oportunidade encontrar(Long id) {

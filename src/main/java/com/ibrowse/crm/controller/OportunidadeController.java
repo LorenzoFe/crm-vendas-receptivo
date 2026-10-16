@@ -17,6 +17,7 @@ import com.ibrowse.crm.dto.request.OportunidadeRequest;
 import com.ibrowse.crm.dto.request.PerderOportunidadeRequest;
 import com.ibrowse.crm.dto.response.KanbanEstagioResponse;
 import com.ibrowse.crm.dto.response.OportunidadeResponse;
+import com.ibrowse.crm.dto.response.PipelineResponse;
 import com.ibrowse.crm.enums.StatusOportunidade;
 import com.ibrowse.crm.service.OportunidadeConsultaService;
 import com.ibrowse.crm.service.OportunidadeService;
@@ -92,6 +93,11 @@ public class OportunidadeController {
     @GetMapping("/kanban")
     public List<KanbanEstagioResponse> kanban(@RequestParam(required = false) @Positive Long vendedorId) {
         return consultas.kanban(vendedorId);
+    }
+
+    @GetMapping("/pipeline")
+    public PipelineResponse pipeline() {
+        return consultas.pipeline();
     }
 
 }
