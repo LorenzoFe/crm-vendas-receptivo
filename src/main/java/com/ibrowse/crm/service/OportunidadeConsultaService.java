@@ -19,9 +19,13 @@ import com.ibrowse.crm.dto.response.*;
 import com.ibrowse.crm.config.PaginacaoConfig;
 import com.ibrowse.crm.entity.EstagioVenda;
 import com.ibrowse.crm.entity.Oportunidade;
+import com.ibrowse.crm.entity.Proposta;
 import com.ibrowse.crm.enums.StatusOportunidade;
+import com.ibrowse.crm.mapper.ItemOportunidadeMapper;
 import com.ibrowse.crm.mapper.OportunidadeMapper;
+import com.ibrowse.crm.mapper.PropostaMapper;
 import com.ibrowse.crm.repository.EstagioVendaRepository;
+import com.ibrowse.crm.repository.ItemOportunidadeRepository;
 import com.ibrowse.crm.repository.OportunidadeRepository;
 import com.ibrowse.crm.repository.PipelineResumo;
 
@@ -38,7 +42,11 @@ public class OportunidadeConsultaService {
 
     private final OportunidadeRepository repository;
     private final EstagioVendaRepository estagios;
+    private final ItemOportunidadeRepository itens;
     private final OportunidadeMapper mapper;
+    private final ItemOportunidadeMapper itemMapper;
+    private final PropostaMapper propostaMapper;
+    private final EntityManager entityManager;
 
     public Page<OportunidadeResponse> listar(StatusOportunidade status, Long vendedorId, Long estagioId,
             Long empresaId, Pageable pageable) {
@@ -70,6 +78,20 @@ public class OportunidadeConsultaService {
                 linhas.stream().mapToLong(PipelineEstagioResponse::quantidade).sum(),
                 linhas.stream().map(PipelineEstagioResponse::valorEstimado).reduce(BigDecimal.ZERO, BigDecimal::add),
                 linhas.stream().map(PipelineEstagioResponse::valorPonderado).reduce(BigDecimal.ZERO, BigDecimal::add));
+    }
+
+    public OportunidadeCompletaResponse completa(Long id) {
+        Oportunidade oportunidade = encontrar(id);
+        EmpresaResumoResponse empresa = new EmpresaResumoResponse(oportunidade.getEmpresa().getId(),
+                oportunidade.getEmpresa().getNomeRazaoSocial(), oportunidade.getEmpresa().getSegmento());
+        ContatoResumoResponse contato = oportunidade.getContato() == null ? null
+                : new ContatoResumoResponse(oportunidade.getContato().getId(),
+                        oportunidade.getContato().getNome(), oportunidade.getContato().getCargo());
+        List<PropostaResponse> propostas = entityManager.createQuery(
+                "select p from Proposta p where p.oportunidade.id = :id order by p.id", Proposta.class)
+                .setParameter("id", id).getResultStream().map(propostaMapper::toResponse).toList();
+        return new OportunidadeCompletaResponse(mapper.toResponse(oportunidade), empresa, contato,
+                itens.findByOportunidadeIdOrderByIdAsc(id).stream().map(itemMapper::toResponse).toList(), propostas);
     }
 
     private PipelineEstagioResponse linhaPipeline(EstagioVenda estagio, PipelineResumo resumo) {

@@ -16,6 +16,7 @@ import com.ibrowse.crm.dto.request.MudarEstagioRequest;
 import com.ibrowse.crm.dto.request.OportunidadeRequest;
 import com.ibrowse.crm.dto.request.PerderOportunidadeRequest;
 import com.ibrowse.crm.dto.response.KanbanEstagioResponse;
+import com.ibrowse.crm.dto.response.OportunidadeCompletaResponse;
 import com.ibrowse.crm.dto.response.OportunidadeResponse;
 import com.ibrowse.crm.dto.response.PipelineResponse;
 import com.ibrowse.crm.enums.StatusOportunidade;
@@ -100,4 +101,8 @@ public class OportunidadeController {
         return consultas.pipeline();
     }
 
+    @GetMapping("/{id}/completa")
+    public OportunidadeCompletaResponse completa(@PathVariable @Positive Long id) {
+        return consultas.completa(id);
+    }
 }
