@@ -36,7 +36,7 @@ import tools.jackson.databind.json.JsonMapper;
         "spring.datasource.password=${CRM_TEST_DB_PASSWORD}",
         "spring.jpa.hibernate.ddl-auto=validate",
         "spring.sql.init.mode=always",
-        "spring.sql.init.schema-locations=classpath:schema-test.sql",
+        "spring.sql.init.schema-locations=classpath:db/schema.sql",
         "jwt.secret=segredo-apenas-de-teste-isolado-com-mais-de-32-caracteres"
 })
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
