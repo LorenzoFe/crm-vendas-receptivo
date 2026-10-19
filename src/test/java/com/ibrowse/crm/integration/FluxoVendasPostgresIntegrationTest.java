@@ -73,7 +73,7 @@ class FluxoVendasPostgresIntegrationTest {
 
     @BeforeEach
     void prepararDadosFicticios() {
-        jdbc.execute("TRUNCATE usuarios, roles, permissoes, empresas, contatos, produtos, "
+        jdbc.execute("TRUNCATE usuarios, roles, permissoes, usuario_roles, role_permissoes, empresas, contatos, produtos, "
                 + "estagios_vendas, oportunidades, itens_oportunidade, propostas, tarefas, interacoes, notas "
                 + "RESTART IDENTITY CASCADE");
         String senha = passwordEncoder.encode("senha-ficticia-integracao");
@@ -92,6 +92,13 @@ class FluxoVendasPostgresIntegrationTest {
         jdbc.update("INSERT INTO estagios_vendas(nome,ordem,probabilidade_conversao) VALUES ('Etapa posterior',20,80)");
         estagioInicialId = jdbc.queryForObject("INSERT INTO estagios_vendas(nome,ordem,probabilidade_conversao) "
                 + "VALUES ('Etapa inicial',10,25) RETURNING id", Long.class);
+        jdbc.update("INSERT INTO roles(nome) VALUES ('ADMIN')");
+        jdbc.update("INSERT INTO permissoes(nome,modulo) VALUES "
+                + "('ver_oportunidade','oportunidades'),('criar_oportunidade','oportunidades'),"
+                + "('editar_oportunidade','oportunidades'),('deletar_oportunidade','oportunidades'),"
+                + "('criar_proposta','propostas'),('editar_proposta','propostas')");
+        jdbc.update("INSERT INTO role_permissoes(role_id,permissao_id) SELECT r.id, p.id FROM roles r CROSS JOIN permissoes p");
+        jdbc.update("INSERT INTO usuario_roles(usuario_id,role_id) SELECT u.id, r.id FROM usuarios u CROSS JOIN roles r");
         token = login("vendedor@example.invalid");
         outroToken = login("outro@example.invalid");
     }
