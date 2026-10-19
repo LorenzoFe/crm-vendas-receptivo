@@ -1,5 +1,7 @@
 package com.ibrowse.crm.controller;
 
+import com.ibrowse.crm.exception.GlobalExceptionHandler;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -29,7 +31,7 @@ class EstagioVendaControllerTest {
     void preparar() {
         service = mock(EstagioVendaService.class);
         mvc = MockMvcBuilders.standaloneSetup(new EstagioVendaController(service))
-                .setControllerAdvice(new EstagioVendaExceptionHandler())
+                .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
     }
 
@@ -62,7 +64,7 @@ class EstagioVendaControllerTest {
     void jsonMalformadoRetorna400SemDetalhesInternos() throws Exception {
         mvc.perform(post("/estagios").contentType(MediaType.APPLICATION_JSON).content("{"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.detail").value("JSON ou parâmetro com formato inválido"));
+                .andExpect(jsonPath("$.detail").value("JSON, parâmetro ou valor de campo inválido"));
     }
 
     @Test

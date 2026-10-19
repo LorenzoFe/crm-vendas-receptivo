@@ -9,7 +9,7 @@ public record TarefaRequest(
         @NotBlank @Size(max = 255) String titulo,
         @Size(max = 20000) String descricao,
         @NotNull @Positive Long responsavelId,
-        @NotNull StatusTarefa status,
+        StatusTarefa status,
         @NotNull PrioridadeTarefa prioridade,
         LocalDate dataVencimento,
         @Positive Long empresaId,

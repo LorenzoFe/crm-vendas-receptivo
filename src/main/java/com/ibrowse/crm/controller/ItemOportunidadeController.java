@@ -18,7 +18,6 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@PessoaBController
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("/oportunidades/{oportunidadeId}/itens")
 @RequiredArgsConstructor

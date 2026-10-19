@@ -36,6 +36,16 @@ class TarefaServiceTest {
     }
 
     @Test
+    void criarSemStatusComecaPendente() {
+        prepararVinculos();
+        when(repository.saveAndFlush(any())).thenAnswer(invocacao -> invocacao.getArgument(0));
+
+        var resposta = service.criar(request(null));
+
+        assertEquals(StatusTarefa.PENDENTE, resposta.status());
+    }
+
+    @Test
     void criarConcluidaDefineDataNoServidor() {
         prepararVinculos();
         when(repository.saveAndFlush(any())).thenAnswer(invocacao -> {

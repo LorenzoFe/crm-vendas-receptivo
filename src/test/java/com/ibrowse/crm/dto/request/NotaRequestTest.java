@@ -24,7 +24,7 @@ class NotaRequestTest {
 
     @Test
     void camposObrigatoriosAusentesSaoRecusados() {
-        assertEquals(2, VALIDATOR.validate(new NotaRequest(" ", null, null, null, null)).size());
+        assertEquals(1, VALIDATOR.validate(new NotaRequest(" ", null, null, null, null)).size());
     }
 
     @Test

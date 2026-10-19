@@ -29,6 +29,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.ibrowse.crm.entity.EstagioVenda;
 import com.ibrowse.crm.entity.Oportunidade;
 import com.ibrowse.crm.entity.Proposta;
 import com.ibrowse.crm.enums.StatusOportunidade;
@@ -48,6 +49,8 @@ class PropostaServiceTest {
     @Mock private NumeroPropostaService numeros;
     @Mock private EntityManager entityManager;
     @Mock private TypedQuery<BigDecimal> subtotais;
+    @Mock private TypedQuery<EstagioVenda> estagios;
+    private EstagioVenda estagioFinal;
     private PropostaService service;
     private Oportunidade oportunidade;
     private Proposta proposta;
@@ -57,6 +60,13 @@ class PropostaServiceTest {
         Clock clock = Clock.fixed(Instant.parse("2026-10-16T12:00:00Z"), ZoneOffset.UTC);
         service = new PropostaService(repository, Mappers.getMapper(PropostaMapper.class), numeros,
                 entityManager, clock);
+        estagioFinal = new EstagioVenda();
+        estagioFinal.setId(9L);
+        estagioFinal.setNome("Fechado");
+        estagioFinal.setOrdem(5);
+        lenient().when(entityManager.createQuery(anyString(), eq(EstagioVenda.class))).thenReturn(estagios);
+        lenient().when(estagios.setMaxResults(1)).thenReturn(estagios);
+        lenient().when(estagios.getResultStream()).thenAnswer(invocacao -> Stream.of(estagioFinal));
         oportunidade = new Oportunidade();
         oportunidade.setId(3L);
         oportunidade.setStatus(StatusOportunidade.ATIVA);
@@ -148,6 +158,7 @@ class PropostaServiceTest {
         assertEquals(StatusOportunidade.GANHA, oportunidade.getStatus());
         assertEquals(proposta.getValorTotal(), oportunidade.getValorReal());
         assertEquals(HOJE, oportunidade.getDataFechamentoReal());
+        assertSame(estagioFinal, oportunidade.getEstagio());
         var ordem = inOrder(entityManager, repository);
         ordem.verify(repository).buscarOportunidadeId(8L);
         ordem.verify(entityManager).find(Oportunidade.class, 3L, LockModeType.PESSIMISTIC_WRITE);

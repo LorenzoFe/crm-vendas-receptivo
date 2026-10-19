@@ -18,7 +18,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Pessoa de uma empresa cliente com quem o vendedor conversa. */
 @Entity
 @Table(name = "contatos")
 @Getter

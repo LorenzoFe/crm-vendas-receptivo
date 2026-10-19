@@ -51,4 +51,6 @@ public interface OportunidadeRepository extends JpaRepository<Oportunidade, Long
                 or exists (select n.id from Nota n where n.oportunidade.id = o.id))
             """)
     boolean possuiDependencias(@Param("id") Long id);
+
+    List<Oportunidade> findByVendedorId(Long vendedorId);
 }

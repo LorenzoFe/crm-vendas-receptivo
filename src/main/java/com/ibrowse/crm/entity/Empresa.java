@@ -18,7 +18,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Empresa cliente (alvo de venda). */
 @Entity
 @Table(name = "empresas")
 @Getter
@@ -51,7 +50,6 @@ public class Empresa {
 
 	private Boolean ativo = true;
 
-	/** Vendedor interno responsável pela conta. */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_responsavel_id")
 	private Usuario usuarioResponsavel;

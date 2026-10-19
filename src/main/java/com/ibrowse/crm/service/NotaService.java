@@ -34,19 +34,19 @@ public class NotaService {
 
     @Transactional
     public NotaResponse criar(NotaRequest request) {
-        vinculos.validarAutoria(request.usuarioId());
+        Long autorId = vinculos.autor(request.usuarioId());
         Nota entity = mapper.toEntity(request);
-        preencherVinculos(entity, request);
+        preencherVinculos(entity, request, autorId);
         return salvar(entity);
     }
 
     @Transactional
     public NotaResponse atualizar(Long id, NotaRequest request) {
         Nota entity = buscarEntidade(id);
-        vinculos.validarAutoria(request.usuarioId());
         vinculos.validarAutoria(entity.getUsuario().getId());
+        Long autorId = vinculos.autor(request.usuarioId());
         mapper.atualizar(request, entity);
-        preencherVinculos(entity, request);
+        preencherVinculos(entity, request, autorId);
         return salvar(entity);
     }
 
@@ -62,12 +62,12 @@ public class NotaService {
         }
     }
 
-    private void preencherVinculos(Nota entity, NotaRequest request) {
+    private void preencherVinculos(Nota entity, NotaRequest request, Long autorId) {
         var resolvidos = vinculos.resolver(request.empresaId(), request.contatoId(), request.oportunidadeId(), true);
         entity.setEmpresa(resolvidos.empresa());
         entity.setContato(resolvidos.contato());
         entity.setOportunidade(resolvidos.oportunidade());
-        entity.setUsuario(vinculos.usuarioAtivo(request.usuarioId()));
+        entity.setUsuario(vinculos.usuarioAtivo(autorId));
     }
 
     private NotaResponse salvar(Nota entity) {

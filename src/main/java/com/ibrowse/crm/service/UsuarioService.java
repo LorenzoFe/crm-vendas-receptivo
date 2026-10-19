@@ -87,9 +87,9 @@ public class UsuarioService {
             return null;
         }
         Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário responsável " + id + " não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário responsável " + id + " não encontrado"));
         if (!Boolean.TRUE.equals(usuario.getAtivo())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário responsável " + id + " está inativo");
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Usuário responsável " + id + " está inativo");
         }
         return usuario;
     }
@@ -111,7 +111,7 @@ public class UsuarioService {
             for (Role role : encontradas){
                 nomesNormalizado.remove(role.getNome());
             }
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Roles inexistentes: " + nomesNormalizado);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Roles inexistentes: " + nomesNormalizado);
         }
         return new HashSet<>(encontradas);
     }

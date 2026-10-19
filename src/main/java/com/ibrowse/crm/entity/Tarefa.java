@@ -24,7 +24,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Atividade a ser feita por um usuário (follow-up, enviar proposta...). */
 @Entity
 @Table(name = "tarefas")
 @Getter

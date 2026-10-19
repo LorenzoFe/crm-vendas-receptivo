@@ -18,7 +18,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Anotação livre sobre uma empresa, contato ou oportunidade. */
 @Entity
 @Table(name = "notas")
 @Getter
@@ -42,7 +41,6 @@ public class Nota {
 	@JoinColumn(name = "oportunidade_id")
 	private Oportunidade oportunidade;
 
-	/** Autor da nota. */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "usuario_id", nullable = false)
 	private Usuario usuario;

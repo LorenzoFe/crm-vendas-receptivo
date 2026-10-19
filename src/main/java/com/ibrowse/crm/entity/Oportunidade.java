@@ -24,7 +24,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Negociação em andamento com uma empresa cliente. É o centro do CRM. */
 @Entity
 @Table(name = "oportunidades")
 @Getter

@@ -24,7 +24,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Proposta comercial gerada a partir de uma oportunidade. */
 @Entity
 @Table(name = "propostas")
 @Getter
