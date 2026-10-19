@@ -78,9 +78,9 @@ public class EmpresaService {
 
 	public Empresa buscarEmpresaAtiva(Long id) {
 		Empresa empresa = empresaRepository.findById(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Empresa " + id + " não encontrada"));
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empresa " + id + " não encontrada"));
 		if (!Boolean.TRUE.equals(empresa.getAtivo())) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Empresa " + id + " está inativa");
+			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Empresa " + id + " está inativa");
 		}
 		return empresa;
 	}

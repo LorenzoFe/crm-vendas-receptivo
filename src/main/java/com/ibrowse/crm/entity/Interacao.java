@@ -21,7 +21,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Registro de contato com o cliente (ligação, email, reunião...). */
 @Entity
 @Table(name = "interacoes")
 @Getter
@@ -49,7 +48,6 @@ public class Interacao {
 	@JoinColumn(name = "oportunidade_id")
 	private Oportunidade oportunidade;
 
-	/** Usuário que registrou a interação. */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "usuario_id", nullable = false)
 	private Usuario usuario;

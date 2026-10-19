@@ -16,7 +16,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@PessoaBController
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("/tarefas")
 @RequiredArgsConstructor

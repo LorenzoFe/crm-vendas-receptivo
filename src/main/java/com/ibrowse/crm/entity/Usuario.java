@@ -20,7 +20,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Pessoa interna que usa o CRM (vendedor, gerente, admin). Não confundir com Empresa (cliente). */
 @Entity
 @Table(name = "usuarios")
 @Getter

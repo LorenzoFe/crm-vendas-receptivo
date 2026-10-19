@@ -21,6 +21,10 @@ spring:
       hibernate:
         format_sql: true
 
+  web:
+    locale: pt_BR
+    locale-resolver: fixed
+
 server:
   port: ${SERVER_PORT:8080}
 

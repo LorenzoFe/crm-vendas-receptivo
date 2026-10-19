@@ -20,7 +20,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Produto incluído em uma oportunidade, com quantidade e preço negociado. */
 @Entity
 @Table(name = "itens_oportunidade")
 @Getter

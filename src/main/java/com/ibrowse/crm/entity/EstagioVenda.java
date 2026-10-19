@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Etapa do funil de vendas (colunas do kanban). */
 @Entity
 @Table(name = "estagios_vendas")
 @Getter

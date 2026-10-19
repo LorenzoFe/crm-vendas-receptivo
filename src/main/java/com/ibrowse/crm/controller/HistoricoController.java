@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@PessoaBController
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("/oportunidades/{id}/historico")
 @RequiredArgsConstructor

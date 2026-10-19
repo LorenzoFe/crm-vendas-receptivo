@@ -22,7 +22,6 @@ public class NumeroPropostaService {
     private final EntityManager entityManager;
     private final PropostaRepository propostaRepository;
 
-    /** O lock permanece até o commit da mesma transação que persiste a proposta. */
     @Transactional(propagation = Propagation.MANDATORY)
     public String proximo(LocalDate dataEmissao) {
         entityManager.createNativeQuery("select 1 from pg_advisory_xact_lock(cast(:chave as integer))")
