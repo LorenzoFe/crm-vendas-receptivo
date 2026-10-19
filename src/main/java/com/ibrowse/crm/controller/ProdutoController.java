@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +52,7 @@ public class ProdutoController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
 	@Operation(summary = "Cadastra um produto")
 	public ResponseEntity<ProdutoResponse> criar(@RequestBody @Valid ProdutoRequest request) {
 		ProdutoResponse criado = produtoService.criar(request);
@@ -60,12 +62,14 @@ public class ProdutoController {
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
 	@Operation(summary = "Atualiza um produto")
 	public ProdutoResponse atualizar(@PathVariable Long id, @RequestBody @Valid ProdutoRequest request) {
 		return produtoService.atualizar(id, request);
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
 	@Operation(summary = "Desativa um produto (exclusão lógica)")
 	public ResponseEntity<Void> desativar(@PathVariable Long id) {
 		produtoService.desativar(id);

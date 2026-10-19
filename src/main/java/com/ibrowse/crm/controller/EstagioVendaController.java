@@ -46,6 +46,7 @@ public class EstagioVendaController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
     @Operation(summary = "Cadastra um estágio")
     public ResponseEntity<EstagioVendaResponse> criar(@RequestBody @Valid EstagioVendaRequest request) {
         EstagioVendaResponse criado = estagioVendaService.criar(request);
@@ -55,6 +56,7 @@ public class EstagioVendaController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
     @Operation(summary = "Atualiza um estágio")
     public EstagioVendaResponse atualizar(@PathVariable Long id,
             @RequestBody @Valid EstagioVendaRequest request) {
@@ -62,6 +64,7 @@ public class EstagioVendaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
     @Operation(summary = "Exclui um estágio sem oportunidades vinculadas")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         estagioVendaService.excluir(id);

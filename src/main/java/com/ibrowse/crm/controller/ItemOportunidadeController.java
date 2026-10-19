@@ -28,23 +28,27 @@ public class ItemOportunidadeController {
     private final ItemOportunidadeService service;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ver_oportunidade')")
     public List<ItemOportunidadeResponse> listar(@PathVariable @Positive Long oportunidadeId) {
         return service.listar(oportunidadeId);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('editar_oportunidade')")
     public ResponseEntity<ItemOportunidadeResponse> adicionar(@PathVariable @Positive Long oportunidadeId,
             @RequestBody @Valid ItemOportunidadeRequest request) {
         return ResponseEntity.status(201).body(service.adicionar(oportunidadeId, request));
     }
 
     @PutMapping("/{itemId}")
+    @PreAuthorize("hasAuthority('editar_oportunidade')")
     public ItemOportunidadeResponse atualizar(@PathVariable @Positive Long oportunidadeId,
             @PathVariable @Positive Long itemId, @RequestBody @Valid AtualizarItemRequest request) {
         return service.atualizar(oportunidadeId, itemId, request);
     }
 
     @DeleteMapping("/{itemId}")
+    @PreAuthorize("hasAuthority('editar_oportunidade')")
     public ResponseEntity<Void> remover(@PathVariable @Positive Long oportunidadeId,
             @PathVariable @Positive Long itemId) {
         service.remover(oportunidadeId, itemId);

@@ -34,6 +34,7 @@ public class PropostaController {
     private final PropostaService propostaService;
 
     @PostMapping("/gerar-de-oportunidade/{id}")
+    @PreAuthorize("hasAuthority('criar_proposta')")
     @Operation(summary = "Gera um rascunho a partir dos itens de uma oportunidade ativa")
     public ResponseEntity<PropostaResponse> gerarDeOportunidade(@PathVariable Long id) {
         PropostaResponse criada = propostaService.gerarDeOportunidade(id);
@@ -43,6 +44,7 @@ public class PropostaController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ver_oportunidade')")
     @Operation(summary = "Lista propostas com filtros opcionais de status e oportunidade")
     public PagedModel<PropostaResponse> listar(@RequestParam(required = false) StatusProposta status,
             @RequestParam(required = false) Long oportunidadeId,
@@ -51,21 +53,25 @@ public class PropostaController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ver_oportunidade')")
     public PropostaResponse buscarPorId(@PathVariable Long id) {
         return propostaService.buscarPorId(id);
     }
 
     @PutMapping("/{id}/enviar")
+    @PreAuthorize("hasAuthority('editar_proposta')")
     public PropostaResponse enviar(@PathVariable Long id) {
         return propostaService.enviar(id);
     }
 
     @PutMapping("/{id}/aceitar")
+    @PreAuthorize("hasAuthority('editar_proposta')")
     public PropostaResponse aceitar(@PathVariable Long id) {
         return propostaService.aceitar(id);
     }
 
     @PutMapping("/{id}/rejeitar")
+    @PreAuthorize("hasAuthority('editar_proposta')")
     public PropostaResponse rejeitar(@PathVariable Long id) {
         return propostaService.rejeitar(id);
     }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,6 +66,7 @@ public class EmpresaController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('criar_empresa')")
 	@Operation(summary = "Cadastra uma empresa")
 	public ResponseEntity<EmpresaResponse> criar(@RequestBody @Valid EmpresaRequest request) {
 		EmpresaResponse criada = empresaService.criar(request);
@@ -74,12 +76,14 @@ public class EmpresaController {
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('editar_empresa')")
 	@Operation(summary = "Atualiza uma empresa")
 	public EmpresaResponse atualizar(@PathVariable Long id, @RequestBody @Valid EmpresaRequest request) {
 		return empresaService.atualizar(id, request);
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('deletar_empresa')")
 	@Operation(summary = "Desativa uma empresa (exclusão lógica)")
 	public ResponseEntity<Void> desativar(@PathVariable Long id) {
 		empresaService.desativar(id);

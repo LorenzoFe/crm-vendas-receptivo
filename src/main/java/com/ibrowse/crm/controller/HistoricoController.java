@@ -20,6 +20,7 @@ public class HistoricoController {
     private final HistoricoService service;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ver_oportunidade')")
     public PagedModel<HistoricoResponse> listar(@PathVariable Long id,
             @PageableDefault(size = 20) Pageable pageable) {
         return new PagedModel<>(service.listar(id, pageable));
