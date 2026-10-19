@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.Instant;
+import java.time.Clock;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +31,20 @@ class InteracaoServiceTest {
 
     @BeforeEach
     void preparar() {
-        service = new InteracaoService(repository, Mappers.getMapper(InteracaoMapper.class), vinculos);
+        service = new InteracaoService(repository, Mappers.getMapper(InteracaoMapper.class), vinculos,
+                Clock.fixed(Instant.parse("2026-10-16T13:00:00Z"), ZoneOffset.UTC));
+    }
+
+    @Test
+    void criarSemDataESemUsuarioUsaAgoraEUsuarioDoToken() {
+        prepararVinculos();
+        when(vinculos.autor(null)).thenReturn(3L);
+        when(repository.saveAndFlush(any())).thenAnswer(invocacao -> invocacao.getArgument(0));
+
+        var resultado = service.criar(new InteracaoRequest(TipoInteracao.CHAMADA, "Ligação com cliente", null, null, null, null, 8L));
+
+        assertEquals(3L, resultado.usuarioId());
+        assertEquals(LocalDateTime.of(2026, 10, 16, 13, 0), resultado.dataInteracao());
     }
 
     @Test
@@ -106,7 +122,6 @@ class InteracaoServiceTest {
         entity.setUsuario(autor);
         entity.setDescricao("Texto original");
         when(repository.findById(8L)).thenReturn(Optional.of(entity));
-        doNothing().when(vinculos).validarAutoria(3L);
         doThrow(new ResponseStatusException(HttpStatus.FORBIDDEN, "Autoria diferente"))
                 .when(vinculos).validarAutoria(4L);
 
@@ -146,6 +161,7 @@ class InteracaoServiceTest {
         oportunidade.setId(8L);
         when(vinculos.resolver(null, null, 8L, true))
                 .thenReturn(new VinculosAcompanhamentoService.Vinculos(null, null, oportunidade));
+        lenient().when(vinculos.autor(3L)).thenReturn(3L);
         when(vinculos.usuarioAtivo(3L)).thenReturn(usuario);
     }
 }

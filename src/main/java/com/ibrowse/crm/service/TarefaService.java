@@ -40,6 +40,9 @@ public class TarefaService {
     @Transactional
     public TarefaResponse criar(TarefaRequest request) {
         Tarefa entity = mapper.toEntity(request);
+        if (entity.getStatus() == null) {
+            entity.setStatus(StatusTarefa.PENDENTE);
+        }
         preencherVinculos(entity, request);
         ajustarConclusao(entity);
         return salvar(entity);
@@ -48,7 +51,11 @@ public class TarefaService {
     @Transactional
     public TarefaResponse atualizar(Long id, TarefaRequest request) {
         Tarefa entity = buscarEntidade(id);
+        StatusTarefa statusAnterior = entity.getStatus();
         mapper.atualizar(request, entity);
+        if (request.status() == null) {
+            entity.setStatus(statusAnterior);
+        }
         preencherVinculos(entity, request);
         ajustarConclusao(entity);
         return salvar(entity);

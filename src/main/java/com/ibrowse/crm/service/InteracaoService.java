@@ -1,5 +1,8 @@
 package com.ibrowse.crm.service;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,6 +24,7 @@ public class InteracaoService {
     private final InteracaoRepository repository;
     private final InteracaoMapper mapper;
     private final VinculosAcompanhamentoService vinculos;
+    private final Clock clock;
 
     @Transactional(readOnly = true)
     public Page<InteracaoResponse> listar(Pageable pageable) {
@@ -34,19 +38,26 @@ public class InteracaoService {
 
     @Transactional
     public InteracaoResponse criar(InteracaoRequest request) {
-        vinculos.validarAutoria(request.usuarioId());
+        Long autorId = vinculos.autor(request.usuarioId());
         Interacao entity = mapper.toEntity(request);
-        preencherVinculos(entity, request);
+        if (entity.getDataInteracao() == null) {
+            entity.setDataInteracao(LocalDateTime.now(clock));
+        }
+        preencherVinculos(entity, request, autorId);
         return salvar(entity);
     }
 
     @Transactional
     public InteracaoResponse atualizar(Long id, InteracaoRequest request) {
         Interacao entity = buscarEntidade(id);
-        vinculos.validarAutoria(request.usuarioId());
         vinculos.validarAutoria(entity.getUsuario().getId());
+        Long autorId = vinculos.autor(request.usuarioId());
+        LocalDateTime dataAnterior = entity.getDataInteracao();
         mapper.atualizar(request, entity);
-        preencherVinculos(entity, request);
+        if (request.dataInteracao() == null) {
+            entity.setDataInteracao(dataAnterior);
+        }
+        preencherVinculos(entity, request, autorId);
         return salvar(entity);
     }
 
@@ -62,12 +73,12 @@ public class InteracaoService {
         }
     }
 
-    private void preencherVinculos(Interacao entity, InteracaoRequest request) {
+    private void preencherVinculos(Interacao entity, InteracaoRequest request, Long autorId) {
         var resolvidos = vinculos.resolver(request.empresaId(), request.contatoId(), request.oportunidadeId(), true);
         entity.setEmpresa(resolvidos.empresa());
         entity.setContato(resolvidos.contato());
         entity.setOportunidade(resolvidos.oportunidade());
-        entity.setUsuario(vinculos.usuarioAtivo(request.usuarioId()));
+        entity.setUsuario(vinculos.usuarioAtivo(autorId));
     }
 
     private InteracaoResponse salvar(Interacao entity) {

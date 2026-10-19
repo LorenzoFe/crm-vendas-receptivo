@@ -38,16 +38,29 @@ public class VinculosAcompanhamentoService {
         return new Vinculos(empresa, contato, oportunidade);
     }
 
+    public Long autor(Long usuarioIdInformado) {
+        Long logado = usuarioLogado().id();
+        if (usuarioIdInformado != null && !Objects.equals(logado, usuarioIdInformado)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Somente o próprio usuário pode registrar ou editar sua autoria");
+        }
+        return logado;
+    }
+
     public void validarAutoria(Long usuarioId) {
+        if (!Objects.equals(usuarioLogado().id(), usuarioId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Somente o próprio usuário pode registrar ou editar sua autoria");
+        }
+    }
+
+    private UsuarioAutenticado usuarioLogado() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()
                 || !(authentication.getPrincipal() instanceof UsuarioAutenticado usuario)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Autenticação necessária");
         }
-        if (!Objects.equals(usuario.id(), usuarioId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "Somente o próprio usuário pode registrar ou editar sua autoria");
-        }
+        return usuario;
     }
 
     public Usuario usuarioAtivo(Long id) {

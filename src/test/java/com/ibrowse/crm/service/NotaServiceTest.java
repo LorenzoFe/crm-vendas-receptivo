@@ -105,7 +105,6 @@ class NotaServiceTest {
         entity.setUsuario(autor);
         entity.setConteudo("Texto original");
         when(repository.findById(8L)).thenReturn(Optional.of(entity));
-        doNothing().when(vinculos).validarAutoria(3L);
         doThrow(new ResponseStatusException(HttpStatus.FORBIDDEN, "Autoria diferente"))
                 .when(vinculos).validarAutoria(4L);
 
@@ -145,6 +144,7 @@ class NotaServiceTest {
         oportunidade.setId(8L);
         when(vinculos.resolver(null, null, 8L, true))
                 .thenReturn(new VinculosAcompanhamentoService.Vinculos(null, null, oportunidade));
+        lenient().when(vinculos.autor(3L)).thenReturn(3L);
         when(vinculos.usuarioAtivo(3L)).thenReturn(usuario);
     }
 }

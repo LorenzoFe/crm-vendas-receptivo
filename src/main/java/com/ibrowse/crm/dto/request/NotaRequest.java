@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 
 public record NotaRequest(
         @NotBlank @Size(max = 20000) String conteudo,
-        @NotNull @Positive Long usuarioId,
+        @Positive Long usuarioId,
         @Positive Long empresaId,
         @Positive Long contatoId,
         @Positive Long oportunidadeId) {

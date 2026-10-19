@@ -25,7 +25,7 @@ class TarefaRequestTest {
 
     @Test
     void camposObrigatoriosAusentesSaoRecusados() {
-        assertEquals(4, VALIDATOR.validate(new TarefaRequest(" ", null, null, null, null, null, null, null, null)).size());
+        assertEquals(3, VALIDATOR.validate(new TarefaRequest(" ", null, null, null, null, null, null, null, null)).size());
     }
 
     @Test

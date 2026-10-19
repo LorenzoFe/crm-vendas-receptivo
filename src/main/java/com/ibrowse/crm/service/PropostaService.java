@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ibrowse.crm.dto.response.PropostaResponse;
+import com.ibrowse.crm.entity.EstagioVenda;
 import com.ibrowse.crm.entity.Oportunidade;
 import com.ibrowse.crm.entity.Proposta;
 import com.ibrowse.crm.enums.StatusOportunidade;
@@ -75,6 +77,7 @@ public class PropostaService {
         oportunidade.setStatus(StatusOportunidade.GANHA);
         oportunidade.setValorReal(proposta.getValorTotal());
         oportunidade.setDataFechamentoReal(hoje);
+        estagioFinal().ifPresent(oportunidade::setEstagio);
         return salvar(proposta);
     }
 
@@ -183,4 +186,11 @@ public class PropostaService {
     private ResponseStatusException naoEncontrada(String recurso, Long id) {
         return new ResponseStatusException(HttpStatus.NOT_FOUND, recurso + " " + id + " não encontrada");
     }
+
+    private Optional<EstagioVenda> estagioFinal() {
+        return entityManager.createQuery(
+                "select e from EstagioVenda e order by e.ordem desc, e.id desc", EstagioVenda.class)
+                .setMaxResults(1).getResultStream().findFirst();
+    }
+
 }

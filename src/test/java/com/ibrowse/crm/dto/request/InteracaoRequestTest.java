@@ -26,7 +26,7 @@ class InteracaoRequestTest {
 
     @Test
     void camposObrigatoriosAusentesSaoRecusados() {
-        assertEquals(4, VALIDATOR.validate(new InteracaoRequest(null, " ", null, null, null, null, null)).size());
+        assertEquals(2, VALIDATOR.validate(new InteracaoRequest(null, " ", null, null, null, null, null)).size());
     }
 
     @Test
