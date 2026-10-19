@@ -52,3 +52,6 @@ target/
 
 # Configuração local (senhas) - usar application-local.example.yml como modelo
 application-local.yml
+
+# Guias locais de estudo da Pessoa B
+/docs/pessoa_b/
