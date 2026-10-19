@@ -36,11 +36,11 @@ import tools.jackson.databind.json.JsonMapper;
         "spring.datasource.password=${CRM_TEST_DB_PASSWORD}",
         "spring.jpa.hibernate.ddl-auto=validate",
         "spring.sql.init.mode=always",
-        "spring.sql.init.schema-locations=classpath:schema-pessoa-b-test.sql",
+        "spring.sql.init.schema-locations=classpath:schema-test.sql",
         "jwt.secret=segredo-apenas-de-teste-isolado-com-mais-de-32-caracteres"
 })
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PessoaBPostgresIntegrationTest {
+class FluxoVendasPostgresIntegrationTest {
 
     @LocalServerPort
     private int port;
@@ -97,7 +97,7 @@ class PessoaBPostgresIntegrationTest {
     }
 
     @Test
-    void endpointsDaPessoaBExigemAutenticacao() {
+    void endpointsDoFluxoDeVendasExigemAutenticacao() {
         for (String caminho : List.of("/estagios", "/oportunidades", "/propostas",
                 "/tarefas", "/interacoes", "/notas")) {
             requisitar("GET", caminho, null, 401, null);
