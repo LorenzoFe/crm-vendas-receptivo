@@ -52,6 +52,8 @@ app:
     senha: ${ADMIN_PASSWORD:senha123}
 
 springdoc:
+  # Mostra page/size/sort como campos separados no Swagger (em vez de um JSON com sort ["string"]).
+  default-flat-param-object: true
   swagger-ui:
     path: /swagger-ui.html
 
