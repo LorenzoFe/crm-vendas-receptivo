@@ -16,11 +16,15 @@ public record VonixProperties(
         return token != null && !token.isBlank() && !token.startsWith("COLE_AQUI");
     }
 
+    public boolean urlConfigurada() {
+        return url != null && !url.isBlank();
+    }
+
     public boolean filaConfigurada() {
         return filaId != null && !filaId.isBlank();
     }
 
     public boolean pronto() {
-        return habilitado && tokenConfigurado() && filaConfigurada();
+        return habilitado && urlConfigurada() && tokenConfigurado() && filaConfigurada();
     }
 }

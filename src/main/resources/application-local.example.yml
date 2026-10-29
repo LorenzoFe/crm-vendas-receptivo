@@ -9,3 +9,9 @@ spring:
 jwt:
   # Qualquer texto com no mínimo 32 caracteres
   secret: coloque-aqui-um-segredo-com-pelo-menos-32-caracteres
+
+vonix:
+  habilitado: false
+  url: url-base-da-api-da-vonix
+  token: token-do-alimentador
+  fila-id: id-da-fila-de-teste

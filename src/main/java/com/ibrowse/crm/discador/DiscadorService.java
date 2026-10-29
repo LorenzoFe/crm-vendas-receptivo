@@ -125,8 +125,8 @@ public class DiscadorService {
     }
 
     public String listarFilas() {
-        if (!properties.tokenConfigurado()) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Token da Vonix não configurado");
+        if (!properties.urlConfigurada() || !properties.tokenConfigurado()) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "URL ou token da Vonix não configurados");
         }
         try {
             return vonix.listarFilas();
@@ -139,6 +139,7 @@ public class DiscadorService {
         Map<String, Object> situacao = new LinkedHashMap<>();
         situacao.put("habilitado", properties.habilitado());
         situacao.put("url", properties.url());
+        situacao.put("urlConfigurada", properties.urlConfigurada());
         situacao.put("tokenConfigurado", properties.tokenConfigurado());
         situacao.put("filaConfigurada", properties.filaConfigurada());
         situacao.put("filaId", properties.filaId());
