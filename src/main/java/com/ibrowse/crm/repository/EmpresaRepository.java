@@ -1,5 +1,7 @@
 package com.ibrowse.crm.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -26,6 +28,8 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
 			Pageable pageable);
 
 	boolean existsByCnpj(String cnpj);
+
+	Optional<Empresa> findByCnpj(String cnpj);
 
 	boolean existsByCnpjAndIdNot(String cnpj, Long id);
 
