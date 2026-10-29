@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.data.core.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +50,12 @@ public class GlobalExceptionHandler {
 			ConstraintViolationException.class })
 	public ResponseEntity<ProblemDetail> tratarFormato(Exception exception) {
 		return resposta(HttpStatus.BAD_REQUEST, "JSON, parâmetro ou valor de campo inválido");
+	}
+
+	@ExceptionHandler({ PropertyReferenceException.class, InvalidDataAccessApiUsageException.class })
+	public ResponseEntity<ProblemDetail> tratarOrdenacao(Exception exception) {
+		log.warn("Paginação/ordenação inválida: {}", exception.getMessage());
+		return resposta(HttpStatus.BAD_REQUEST, "Parâmetro de paginação ou ordenação inválido");
 	}
 
 	@ExceptionHandler(DataIntegrityViolationException.class)

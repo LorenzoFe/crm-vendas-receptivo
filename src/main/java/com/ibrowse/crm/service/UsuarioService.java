@@ -1,5 +1,6 @@
 package com.ibrowse.crm.service;
 
+import com.ibrowse.crm.config.PaginacaoConfig;
 import com.ibrowse.crm.dto.request.UsuarioRequest;
 import com.ibrowse.crm.dto.request.UsuarioUpdateRequest;
 import com.ibrowse.crm.dto.response.UsuarioResponse;
@@ -30,8 +31,12 @@ public class UsuarioService {
     private final UsuarioMapper usuarioMapper;
     private final PasswordEncoder passwordEncoder;
 
+    private static final Set<String> CAMPOS_ORDENACAO = Set.of("id", "nome", "email", "departamento",
+            "dataCriacao", "dataAtualizacao");
+
     @Transactional(readOnly = true)
     public Page<UsuarioResponse> listar(Pageable pageable){
+        PaginacaoConfig.validar(pageable, CAMPOS_ORDENACAO);
         return  usuarioRepository.findAll(pageable).map(usuarioMapper::toResponse);
     }
 
