@@ -1,7 +1,6 @@
 
 
 
-
 CREATE TABLE IF NOT EXISTS roles (
     id BIGSERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL UNIQUE,
@@ -51,7 +50,6 @@ CREATE TABLE IF NOT EXISTS produtos (
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 
 
 CREATE TABLE IF NOT EXISTS empresas (
@@ -172,6 +170,32 @@ CREATE TABLE IF NOT EXISTS notas (
 );
 
 
+CREATE TABLE IF NOT EXISTS interesses (
+    id BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    telefone VARCHAR(20),
+    cargo VARCHAR(100),
+    empresa_nome VARCHAR(255) NOT NULL,
+    cnpj VARCHAR(14),
+    segmento VARCHAR(100),
+    tamanho_empresa VARCHAR(50),
+    site VARCHAR(255),
+    preferencia_contato VARCHAR(20),
+    mensagem TEXT,
+    status VARCHAR(20) NOT NULL,
+    data_consentimento TIMESTAMP NOT NULL,
+    oportunidade_id BIGINT REFERENCES oportunidades(id) ON DELETE SET NULL,
+    usuario_tratamento_id BIGINT REFERENCES usuarios(id) ON DELETE SET NULL,
+    data_tratamento TIMESTAMP,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS interesse_produtos (
+    interesse_id BIGINT NOT NULL REFERENCES interesses(id) ON DELETE CASCADE,
+    produto_id BIGINT NOT NULL REFERENCES produtos(id) ON DELETE RESTRICT,
+    PRIMARY KEY (interesse_id, produto_id)
+);
 
 
 CREATE INDEX IF NOT EXISTS idx_usuarios_email ON usuarios(email);
@@ -200,3 +224,5 @@ CREATE INDEX IF NOT EXISTS idx_interacoes_data ON interacoes(data_interacao DESC
 CREATE INDEX IF NOT EXISTS idx_tarefas_usuario ON tarefas(usuario_responsavel_id);
 CREATE INDEX IF NOT EXISTS idx_tarefas_status ON tarefas(status);
 CREATE INDEX IF NOT EXISTS idx_tarefas_oportunidade ON tarefas(oportunidade_id);
+
+CREATE INDEX IF NOT EXISTS idx_interesses_status ON interesses(status);

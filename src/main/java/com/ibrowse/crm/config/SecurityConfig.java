@@ -39,6 +39,8 @@ public class SecurityConfig {
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.requestMatchers("/auth/login", "/error").permitAll()
+						.requestMatchers(HttpMethod.GET, "/publico/produtos").permitAll()
+						.requestMatchers(HttpMethod.POST, "/publico/interesses").permitAll()
 						.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 						.anyRequest().authenticated())
 				.exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, erro) -> {
