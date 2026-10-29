@@ -1,5 +1,7 @@
 package com.ibrowse.crm.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -22,5 +24,7 @@ public interface ContatoRepository extends JpaRepository<Contato, Long> {
 			@Param("empresaId") Long empresaId,
 			@Param("ativo") Boolean ativo,
 			Pageable pageable);
+
+	Optional<Contato> findFirstByEmpresaIdAndEmailIgnoreCaseAndAtivoTrue(Long empresaId, String email);
 
 }
