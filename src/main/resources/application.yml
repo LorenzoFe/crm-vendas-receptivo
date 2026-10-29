@@ -51,6 +51,18 @@ app:
     email: ${ADMIN_EMAIL:admin@crm.com}
     senha: ${ADMIN_PASSWORD:senha123}
 
+# Discador Vonix: cada interesse com telefone vai para a fila de discagem.
+# Desligado por padrão. Token e fila ficam no application-local.yml ou em variáveis de ambiente.
+vonix:
+  habilitado: ${VONIX_HABILITADO:false}
+  url: ${VONIX_URL:https://credvalor.api.vonixcc.com.br}
+  token: ${VONIX_TOKEN:}
+  fila-id: ${VONIX_FILA_ID:}
+  # Renitência da Vonix: <vezes>,[intervalo em segundos],[causas]
+  retry: ${VONIX_RETRY:3,1800}
+  intervalo-sincronizacao-ms: ${VONIX_INTERVALO_MS:300000}
+  max-tentativas-envio: ${VONIX_MAX_TENTATIVAS:5}
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
