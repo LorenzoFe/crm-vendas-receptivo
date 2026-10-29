@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,9 @@ import com.ibrowse.crm.entity.Nota;
 import com.ibrowse.crm.entity.Oportunidade;
 import com.ibrowse.crm.entity.Produto;
 import com.ibrowse.crm.entity.Usuario;
+import com.ibrowse.crm.discador.DiscadorService;
+import com.ibrowse.crm.discador.InteresseRegistradoEvent;
+import com.ibrowse.crm.enums.StatusDiscador;
 import com.ibrowse.crm.enums.StatusInteresse;
 import com.ibrowse.crm.enums.StatusOportunidade;
 import com.ibrowse.crm.mapper.InteresseMapper;
@@ -54,6 +58,8 @@ public class InteresseService {
     private final VinculosAcompanhamentoService vinculos;
     private final EntityManager entityManager;
     private final Clock clock;
+    private final DiscadorService discador;
+    private final ApplicationEventPublisher eventos;
 
     @Transactional(readOnly = true)
     public List<ProdutoPublicoResponse> produtosDisponiveis() {
@@ -83,7 +89,16 @@ public class InteresseService {
         interesse.setStatus(StatusInteresse.NOVO);
         interesse.setDataConsentimento(LocalDateTime.now(clock));
         interesse.getProdutos().addAll(produtos);
+        interesse.setDiscadorStatus(DiscadorService.statusInicial(interesse));
         repository.save(interesse);
+        if (interesse.getDiscadorStatus() == StatusDiscador.PENDENTE) {
+            eventos.publishEvent(new InteresseRegistradoEvent(interesse.getId()));
+        }
+    }
+
+    @Transactional
+    public InteresseResponse reenviarDiscador(Long id) {
+        return mapper.toResponse(discador.reenviar(id));
     }
 
     @Transactional(readOnly = true)
@@ -149,6 +164,7 @@ public class InteresseService {
     public InteresseResponse descartar(Long id) {
         Interesse interesse = bloquearNovo(id);
         finalizar(interesse, StatusInteresse.DESCARTADO, vinculos.usuarioAtivo(vinculos.autor(null)));
+        discador.removerDaFila(interesse);
         entityManager.flush();
         return mapper.toResponse(interesse);
     }

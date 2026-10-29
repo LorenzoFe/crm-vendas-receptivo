@@ -43,6 +43,15 @@ app:
     email: ${ADMIN_EMAIL:admin@crm.com}
     senha: ${ADMIN_PASSWORD:senha123}
 
+vonix:
+  habilitado: ${VONIX_HABILITADO:false}
+  url: ${VONIX_URL:}
+  token: ${VONIX_TOKEN:}
+  fila-id: ${VONIX_FILA_ID:}
+  retry: ${VONIX_RETRY:3,1800}
+  intervalo-sincronizacao-ms: ${VONIX_INTERVALO_MS:300000}
+  max-tentativas-envio: ${VONIX_MAX_TENTATIVAS:5}
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

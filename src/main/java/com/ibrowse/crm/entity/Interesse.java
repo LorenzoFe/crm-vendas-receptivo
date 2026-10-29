@@ -7,6 +7,7 @@ import java.util.Set;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.ibrowse.crm.enums.StatusDiscador;
 import com.ibrowse.crm.enums.StatusInteresse;
 
 import jakarta.persistence.Column;
@@ -92,6 +93,20 @@ public class Interesse {
 	private Usuario usuarioTratamento;
 
 	private LocalDateTime dataTratamento;
+
+	@Enumerated(EnumType.STRING)
+	@Column(length = 20)
+	private StatusDiscador discadorStatus;
+
+	@Column(nullable = false)
+	private Integer discadorTentativas = 0;
+
+	@Column(length = 500)
+	private String discadorErro;
+
+	private LocalDateTime discadorEnviadoEm;
+
+	private LocalDateTime discadorResultadoEm;
 
 	@CreationTimestamp
 	@Column(updatable = false)

@@ -34,6 +34,11 @@ public interface InteresseMapper {
     @Mapping(target = "oportunidade", ignore = true)
     @Mapping(target = "usuarioTratamento", ignore = true)
     @Mapping(target = "dataTratamento", ignore = true)
+    @Mapping(target = "discadorStatus", ignore = true)
+    @Mapping(target = "discadorTentativas", ignore = true)
+    @Mapping(target = "discadorErro", ignore = true)
+    @Mapping(target = "discadorEnviadoEm", ignore = true)
+    @Mapping(target = "discadorResultadoEm", ignore = true)
     @Mapping(target = "dataCriacao", ignore = true)
     Interesse toEntity(InteresseRequest request);
 }

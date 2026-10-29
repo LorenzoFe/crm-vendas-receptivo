@@ -191,6 +191,12 @@ CREATE TABLE IF NOT EXISTS interesses (
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE interesses ADD COLUMN IF NOT EXISTS discador_status VARCHAR(20);
+ALTER TABLE interesses ADD COLUMN IF NOT EXISTS discador_tentativas INT NOT NULL DEFAULT 0;
+ALTER TABLE interesses ADD COLUMN IF NOT EXISTS discador_erro VARCHAR(500);
+ALTER TABLE interesses ADD COLUMN IF NOT EXISTS discador_enviado_em TIMESTAMP;
+ALTER TABLE interesses ADD COLUMN IF NOT EXISTS discador_resultado_em TIMESTAMP;
+
 CREATE TABLE IF NOT EXISTS interesse_produtos (
     interesse_id BIGINT NOT NULL REFERENCES interesses(id) ON DELETE CASCADE,
     produto_id BIGINT NOT NULL REFERENCES produtos(id) ON DELETE RESTRICT,
@@ -226,3 +232,4 @@ CREATE INDEX IF NOT EXISTS idx_tarefas_status ON tarefas(status);
 CREATE INDEX IF NOT EXISTS idx_tarefas_oportunidade ON tarefas(oportunidade_id);
 
 CREATE INDEX IF NOT EXISTS idx_interesses_status ON interesses(status);
+CREATE INDEX IF NOT EXISTS idx_interesses_discador_status ON interesses(discador_status);
