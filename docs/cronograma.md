@@ -51,5 +51,5 @@ Responsável: Gabriel · Versão final: 28/10/2026 · Revisado pelo grupo em 03/
 | Item | Responsável | Prazo |
 |---|---|---|
 | Release/tag `v1.0.0` nos dois repositórios | Lorenzo | 10/11 |
-| Banner da AMOSTRATEC | Luiz Felipe | 03/12 |
+| Banner da AMOSTRATEC | Luiz Felipe | 16/11 |
 | Sistema no ar até a apresentação | Lorenzo | 18/11 |
