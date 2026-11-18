@@ -19,7 +19,7 @@ Comparação com o Termo de Abertura (30/08/2026).
 | Autenticação e perfis ADMIN/GERENTE/VENDEDOR | JWT, todas as rotas protegidas e permissões por endpoint | ✅ |
 | Sistema hospedado | API, banco e front no Render | ✅ |
 | Entregas a cada checkpoint (CP-2 a CP-4) | Unificadas em 29/10 por decisão do professor (01/10) | 🔄 |
-| Release versionada | Tag `v1.0.0` pendente | ⏳ |
+| Release versionada | Tag `v1.0.0` nos dois repositórios | ✅ |
 
 **Além do planejado:** landing page do Córtex com planos e FAQ, tratamento global de erros com status HTTP padronizados e fuso de São Paulo nos registros.
 

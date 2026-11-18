@@ -35,7 +35,7 @@ Responsável: Gabriel · Versão final: 28/10/2026 · Revisado pelo grupo em 03/
 | S11 | 22/10 | Início do frontend | Estrutura, login, kanban e cadastros no front (23/10) | ✅ |
 | S12 | 29/10 | **CP-5** — entrega unificada | Interesses e Vonix na API; telas finais, Área do Cliente e landing page no front; front publicado no Render; apresentação | ✅ |
 | S13 | 03/11 | Revisão da documentação | Documentação revisada; apresentação da AMOSTRATEC definida | ✅ |
-| S18 | 10/12 | **AMOSTRATEC** | — | ⏳ Previsto |
+| S15 | 18/11 | **AMOSTRATEC** | — | ⏳ Previsto |
 
 ## Cronograma interno após o replanejamento (v2.0)
 | Etapa | Prazo planejado | Concluído em | Responsável |
@@ -52,4 +52,4 @@ Responsável: Gabriel · Versão final: 28/10/2026 · Revisado pelo grupo em 03/
 |---|---|---|
 | Release/tag `v1.0.0` nos dois repositórios | Lorenzo | 10/11 |
 | Banner da AMOSTRATEC | Luiz Felipe | 03/12 |
-| Sistema no ar até a apresentação | Lorenzo | 10/12 |
+| Sistema no ar até a apresentação | Lorenzo | 18/11 |

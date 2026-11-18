@@ -4,7 +4,7 @@
 |---|---|
 | **Projeto** | Córtex — CRM de Vendas Receptivo |
 | **Disciplina** | VIA231 — Projetos Integrados 2 · Prof. Romualdo Mathias Filho · Uniube 2026/2 |
-| **Período** | 21/08/2026 a 29/10/2026 (checkpoints) · AMOSTRATEC em 10/12/2026 |
+| **Período** | 21/08/2026 a 29/10/2026 (checkpoints) · AMOSTRATEC em 18/11/2026 |
 | **Versão** | 1.0 — aprovada em 30/08/2026 (redação: Moises · revisão: Gabriel) |
 | **Repositórios** | [crm-vendas-receptivo](https://github.com/LorenzoFe/crm-vendas-receptivo) (API) · [crm-vendas-front](https://github.com/LorenzoFe/crm-vendas-front) (front) |
 
